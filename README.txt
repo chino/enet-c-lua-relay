@@ -2,10 +2,11 @@ Small example of a network server/client using an enet abstraction and lua bindi
 
 To build:
 
-	cd c; make
-	cd ..
-	cd lua; make
-	cd ..
+	make
+
+To clean:
+
+	make clean
 
 To host:
 
