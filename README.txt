@@ -1,19 +1,33 @@
-Small example of a network server/client using an enet abstraction and lua bindings.
+author:
 
-To build:
+	Daniel Aquino aka methods
+
+contact:
+
+	fskn.methods@gmail.com
+
+description:
+
+	Small example of a network server/client using an enet abstraction and lua bindings.
+
+clone:
+
+	bzr clone http://fly.thruhere.net/projects/net_proxy
+
+build:
 
 	make
 
-To clean:
+clean:
 
 	make clean
 
-To host:
+host:
 
   ./chat
   ./chat.lua
 
-To join:
+join:
 
 	./chat <host> <port>
 	./chat.lua <host> <port>
