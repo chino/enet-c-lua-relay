@@ -84,7 +84,7 @@ else
 end
 
 -- main loop
-while 1 do
+while true do
 	check_input()
 	network_pump(function( line )
 		print("> "..line)
