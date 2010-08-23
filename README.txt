@@ -24,8 +24,8 @@ clean:
 
 host:
 
-  ./chat
-  ./chat.lua
+	./chat
+	./chat.lua
 
 join:
 
