@@ -1,25 +1,19 @@
 #ifndef NET_INCLUDED
 #define NET_INCLUDED
 
-// == network state ==
-
-// you can query network_state at any time to check the state of the connection
-
 typedef enum {
-	NETWORK_CONNECTED,    // connected to host
-	NETWORK_CONNECTING,   // connecting to host
-	NETWORK_DISCONNECTED, // not connected yet or lost connection
+	NETWORK_CONNECTED,
+	NETWORK_CONNECTING,
+	NETWORK_DISCONNECTED,
 } network_state_t;
 
 network_state_t network_state;
 
-// == main functions ==
-
 typedef enum {
-	NETWORK_OK,         // success
-	NETWORK_FAIL,       // failure
-	NETWORK_ERROR_INIT, // failed to initialize
-	NETWORK_ERROR_BIND  // failed to bind socket
+	NETWORK_OK,
+	NETWORK_FAIL,
+	NETWORK_ERROR_INIT,
+	NETWORK_ERROR_BIND
 } network_return_t;
 
 network_return_t network_join( char* address, int port );
@@ -32,34 +26,41 @@ typedef struct {
 	void* data;
 } network_packet_t;
 
+// network_packet_t is only valid within the callback
+// so copy any data you want to  save
+
 typedef void (*network_event_t)( network_packet_t*, void* );
 
 void network_pump( network_event_t, void * );
 
-// == sending data ==
-
-// unsequenced | unreliable  - is the default
-// reliable    | unsequenced - is not supported
-// reliable                  - is always sequenced
-// sequenced   | unreliable  - will drop late pkts & instantly deliver arrived pkts (position updates)
-// sequenced   | reliable    - will wait for late pkts to arive
-
-// multiple types of pkts can all be sent on the same channel
-// reliable | sequenced will take part in the same sequencing order on a channel
-// unreliable | sequenced pkts will get dropped if they are late...
-
-// channels are mainly good for separating sequenced streams...
-// for instance if you have a stream of position updates and another stream for voice pkts
-// you would NOT want your position pkt dropped cause a newer voice pkt came in first...
-// thus you would create channels to seperate those streams...
+// valid flag combinations:
+//
+//   unreliable + unsequenced - default
+//   unreliable + sequenced   - delivers instantly and drops late packets
+//     reliable               - gauranteed delivery and sequencing
+//
+// channels:
+//
+//   a main channel is usually good enough because
+//   mixing packets with different flags on the same channel is valid
+//   and leads to interesting affects
+//
+//   channels are mainly good for separating sequenced streams
+//   a late position update is normally undesired
+//   but you would not want your latest position update dropped
+//   because a higher sequenced voice packet arrived first
+//   thus separate sequenced streams to avoid unwanted drops
+//
+//   channels could also be used as packet type identifiers
+//
+// data:
+//
+//   data passed to network_send is coppied so you are safe to cleanup the data right away
 
 typedef enum {
-	 NETWORK_RELIABLE  = 2, // note: reliable is also sequenced
+	 NETWORK_RELIABLE  = 2,
 	 NETWORK_SEQUENCED = 4
 } network_flags_t;
-
-// channel 0 is reserved
-// data will be copied so do whatever you want with it afterwards
 
 void network_send( void* data, int size, network_flags_t flags, int channel );
 
