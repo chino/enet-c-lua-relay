@@ -163,7 +163,6 @@ void network_pump( network_event_t handler, void * context )
 					handler( &packet, context );
 				enet_packet_destroy( event.packet );
 			}
-		default:
 			break;
 		}
 	}
