@@ -75,7 +75,7 @@ static int lua_network_quit(lua_State *state)
 	return 0;
 }
 
-void lua_register_network_flags(void)
+static void lua_register_network_flags(void)
 {
 	int top;
 	lua_newtable(L1);
