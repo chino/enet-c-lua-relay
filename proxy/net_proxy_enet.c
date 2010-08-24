@@ -155,14 +155,14 @@ void network_pump( network_event_t handler, void * context )
 			puts("enet lost connection");
 			break;
 		case ENET_EVENT_TYPE_RECEIVE:
+			if(handler)
 			{
 				network_packet_t packet;
 				packet.size = (int) event.packet->dataLength;
 				packet.data = (void*) event.packet->data;
-				if(handler)
-					handler( &packet, context );
-				enet_packet_destroy( event.packet );
+				handler( &packet, context );
 			}
+			enet_packet_destroy( event.packet );
 			break;
 		}
 	}
