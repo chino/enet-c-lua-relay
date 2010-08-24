@@ -54,7 +54,7 @@ int setup_network( void )
 		}
 		puts("-- waiting to connect to host.");
 		while( network_state == NETWORK_CONNECTING )
-			network_pump(NULL);
+			network_pump(NULL,NULL);
 		if( network_state == NETWORK_DISCONNECTED )
 		{
 			puts("-- failed to connect to host to host.");
@@ -92,7 +92,7 @@ int main( int argc, char ** argv )
 	while( 1 )
 	{
 		check_input();
-		network_pump( handle_packet );
+		network_pump( handle_packet, NULL );
 		usleep(1000*100); // 100ms, 0.1s
 	}
 

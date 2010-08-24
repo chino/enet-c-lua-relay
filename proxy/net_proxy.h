@@ -32,9 +32,9 @@ typedef struct {
 	void* data;
 } network_packet_t;
 
-typedef void (*network_event_t)( network_packet_t* data );
+typedef void (*network_event_t)( network_packet_t*, void* );
 
-void network_pump( network_event_t );
+void network_pump( network_event_t, void * );
 
 // == sending data ==
 

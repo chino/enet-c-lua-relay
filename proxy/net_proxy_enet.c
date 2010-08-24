@@ -138,7 +138,7 @@ void network_send( void* data, int size, network_flags_t flags, int channel )
 	enet_host_flush( enet_host );
 }
 
-void network_pump( network_event_t handler )
+void network_pump( network_event_t handler, void * context )
 {
 	ENetEvent event;
 	if( enet_host == NULL ) return;
@@ -160,7 +160,7 @@ void network_pump( network_event_t handler )
 				packet.size = (int) event.packet->dataLength;
 				packet.data = (void*) event.packet->data;
 				if(handler)
-					handler( &packet );
+					handler( &packet, context );
 				enet_packet_destroy( event.packet );
 			}
 		default:
