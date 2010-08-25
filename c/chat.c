@@ -71,7 +71,7 @@ void send_message( char* line )
 		NETWORK_RELIABLE, CHAT_CHANNEL );
 }
 
-void handle_packet( network_packet_t* packet )
+void handle_packet( network_packet_t* packet, void* context )
 {
 	char message[packet->size+1];
 	strncpy( message, (char*)packet->data, packet->size+1 );
