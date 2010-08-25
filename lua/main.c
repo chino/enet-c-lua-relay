@@ -8,7 +8,7 @@ static int lua_set_args( int argc, char ** argv )
 	table = lua_gettop(L1);
 	for( i = 0; i < argc; i++ )
 	{
-		lua_pushinteger(L1,i);
+		lua_pushnumber(L1,i);
 		lua_pushstring(L1,argv[i]);
 		lua_settable(L1,table);
 	}
