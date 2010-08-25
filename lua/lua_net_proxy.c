@@ -31,16 +31,11 @@ static int lua_network_send(lua_State *state)
 static void handle_packet( network_packet_t* packet, void* context )
 {
 	lua_State *state = context;
-	int error = 0;
 	lua_pushvalue(state,-1); // because pcall will remove it
 	lua_pushlstring(state,(const char *)packet->data,packet->size);
-	error = lua_pcall(state,1,0,0);
-	if(error)
-	{
-		const char * ptr = lua_tostring(state,-1);
-		printf("lua error handle_packet: %s\n",
-			ptr ? (char*)ptr : "unknown error" );
-	}
+	if( lua_pcall(state,1,0,0) )
+		printf("lua: error in handle_packet %s\n",
+			lua_tostring(state,-1) );
 	lua_pop(state,1);
 }
 
