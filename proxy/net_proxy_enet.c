@@ -150,11 +150,11 @@ void network_pump( network_event_t handler, void * context )
 			if(event.peer == host_peer)
 				network_state = NETWORK_CONNECTED;
 			printf("enet new connection from %s\n",
-				address_to_str(peer->address));
+				address_to_str(&event.peer->address));
 			break;
 		case ENET_EVENT_TYPE_DISCONNECT:
 			printf("enet lost connection from %s\n",
-				address_to_str(peer->address));
+				address_to_str(&event.peer->address));
 			break;
 		case ENET_EVENT_TYPE_RECEIVE:
 			if(handler)

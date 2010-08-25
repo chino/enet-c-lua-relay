@@ -42,7 +42,7 @@ function join( host, port )
 end
 
 -- command line arguments
-ip, port = args[2], args[3]
+ip, port = ARGV[2], ARGV[3]
 
 -- host or join a host
 hosting = false

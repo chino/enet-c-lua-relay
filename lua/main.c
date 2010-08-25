@@ -3,16 +3,16 @@
 
 static int lua_set_args( int argc, char ** argv )
 {
-	int i, top;
+	int i, table;
 	lua_newtable(L1);
-	top = lua_gettop(L1);
+	table = lua_gettop(L1);
 	for( i = 0; i < argc; i++ )
 	{
 		lua_pushinteger(L1,i);
 		lua_pushstring(L1,argv[i]);
-		lua_settable(L1,top);
+		lua_settable(L1,table);
 	}
-	lua_setglobal(L1,"args");
+	lua_setglobal(L1,"ARGV");
 	return 0;
 }
 
