@@ -5,12 +5,11 @@ static int lua_set_args( int argc, char ** argv )
 {
 	int i, table;
 	lua_newtable(L1);
-	table = lua_gettop(L1);
 	for( i = 0; i < argc; i++ )
 	{
 		lua_pushnumber(L1,i);
 		lua_pushstring(L1,argv[i]);
-		lua_settable(L1,table);
+		lua_settable(L1,-3);
 	}
 	lua_setglobal(L1,"ARGV");
 	return 0;
