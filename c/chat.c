@@ -73,9 +73,11 @@ void send_message( char* line )
 
 void handle_packet( network_packet_t* packet )
 {
-	printf("> %s\n", (char*) packet->data);
+	char message[packet->size+1];
+	strncpy( message, (char*)packet->data, packet->size+1 );
+	printf( "> %s\n", message );
 	if(hosting)
-		send_message( packet->data );
+		send_message( message );
 }
 
 void check_input( void );
