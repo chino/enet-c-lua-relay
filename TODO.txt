@@ -13,3 +13,5 @@ add mingw cross compiler mode to the make file to produce win32 binaries ?
 use a documentation system to generate docs ?
 
 proxy should support passing new/lost connection events and network_packet_t should provide host/port information for the data packets.
+
+chat.c could be broken down into more files for cleaner look
