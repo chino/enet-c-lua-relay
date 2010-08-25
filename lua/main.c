@@ -50,7 +50,7 @@ int main( int argc, char ** argv )
 
 	if( lua_dofile( L1, argv[1] ) )
 	{
-		printf( "lua: failed to dofile '%s'; %s",
+		printf( "lua: failed to dofile '%s'; %s\n",
 			argv[1], lua_tostring( L1, -1 ));
 	}
 
