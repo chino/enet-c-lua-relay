@@ -3,28 +3,28 @@
 
 static int lua_network_host(lua_State *state)
 {
-	int port = luaL_checkint(state,1);
-	int rv = network_host(port);
-	lua_pushboolean(state,rv==NETWORK_OK);
+	int port = luaL_checkint(state,-1);
+	lua_pushboolean(state,
+		network_host(port) == NETWORK_OK);
 	return 1;
 }
 
 static int lua_network_join(lua_State *state)
 {
-	char * host = (char*) lua_tostring(state,1);
-	int port = luaL_checkint(state,2);
-	int rv = network_join(host,port);
-	lua_pushboolean(state,rv==NETWORK_OK);
+	char* host = (char*) lua_tostring(state,-2);
+	int port = luaL_checkint(state,-1);
+	lua_pushboolean(state,
+		network_join(host,port) == NETWORK_OK);
 	return 1;
 }
 
 static int lua_network_send(lua_State *state)
 {
-	char * data = (char*) lua_tostring(state,1);
-	int size = luaL_checkint(state,2);
-	int flags = luaL_checkint(state,3);
-	int channel = luaL_checkint(state,4);
-	network_send(data,size,flags,channel);
+	network_send(
+		(char*) lua_tostring(state,-4),   // data
+		        luaL_checkint(state,-3),  // size
+		        luaL_checkint(state,-2),  // flags
+		        luaL_checkint(state,-1)); // channel
 	return 0;
 }
 

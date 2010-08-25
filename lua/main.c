@@ -7,7 +7,7 @@ static void register_io_ready( lua_State* state )
 	lua_getglobal(state,"io");
 	lua_pushstring(state,"ready");
 	lua_pushcfunction(state,lua_stdin_ready);
-	lua_settable(state,1);
+	lua_settable(state,-3);
 }
 
 static void lua_register_functions( lua_State* state )
@@ -34,7 +34,7 @@ int main( int argc, char ** argv )
 	}
 
 	luaL_openlibs(L1);
-	lua_register_functions( L1 );
+	lua_register_functions(L1);
 
 	if ( lua_set_argv( L1, argc, argv ) )
 	{
@@ -42,7 +42,7 @@ int main( int argc, char ** argv )
 		goto cleanup;
 	}
 
-	if ( lua_register_net_proxy( L1 ) )
+	if ( lua_register_net_proxy(L1) )
 	{
 		puts( "lua: failed to register net proxy" );
 		goto cleanup;
@@ -51,7 +51,7 @@ int main( int argc, char ** argv )
 	if( lua_dofile( L1, argv[1] ) )
 	{
 		printf( "lua: failed to dofile '%s'; %s\n",
-			argv[1], lua_tostring( L1, -1 ));
+			argv[1], lua_tostring(L1,-1));
 	}
 
 cleanup:
