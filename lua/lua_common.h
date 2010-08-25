@@ -20,5 +20,6 @@ extern lua_State *L1;
 int lua_dofile(char*);
 int lua_init(void);
 void lua_shutdown(void);
+int lua_set_argv( lua_State* state, int argc, char ** argv );
 
 #endif /* LUA_COMMON_H */

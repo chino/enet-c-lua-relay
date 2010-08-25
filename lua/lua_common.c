@@ -3,6 +3,20 @@
 
 lua_State *L1;
 
+int lua_set_argv( lua_State* state, int argc, char ** argv )
+{
+	int i, table;
+	lua_newtable(state);
+	for( i = 0; i < argc; i++ )
+	{
+		lua_pushnumber(state,i);
+		lua_pushstring(state,argv[i]);
+		lua_settable(state,-3);
+	}
+	lua_setglobal(state,"ARGV");
+	return 0;
+}
+
 int lua_dofile( char * file )
 {
 	int error = luaL_dofile(L1,file);
