@@ -9,17 +9,7 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
-#define ASSERT(x) \
-        { \
-                int _err = x; \
-                if (_err) return _err; \
-        }
+int lua_dofile   ( lua_State*, char* );
+int lua_set_argv ( lua_State*, int argc, char ** argv );
 
-extern lua_State *L1;
-
-int lua_dofile(char*);
-int lua_init(void);
-void lua_shutdown(void);
-int lua_set_argv( lua_State* state, int argc, char ** argv );
-
-#endif /* LUA_COMMON_H */
+#endif // LUA_COMMON_H

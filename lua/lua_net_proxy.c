@@ -75,30 +75,29 @@ static int lua_network_quit(lua_State *state)
 	return 0;
 }
 
-static void lua_register_network_flags(void)
+static void lua_register_network_flags(lua_State *state)
 {
-	int top;
-	lua_newtable(L1);
+	lua_newtable(state);
 
-	lua_pushstring(L1,"reliable");
-	lua_pushnumber(L1,NETWORK_RELIABLE);
-	lua_settable(L1,-3);
+	lua_pushstring(state,"reliable");
+	lua_pushnumber(state,NETWORK_RELIABLE);
+	lua_settable(state,-3);
 
-	lua_pushstring(L1,"sequenced");
-	lua_pushnumber(L1,NETWORK_SEQUENCED);
-	lua_settable(L1,-3);
+	lua_pushstring(state,"sequenced");
+	lua_pushnumber(state,NETWORK_SEQUENCED);
+	lua_settable(state,-3);
 
-	lua_setglobal(L1,"network_flags");
+	lua_setglobal(state,"network_flags");
 }
 
-int lua_register_net_proxy( void )
+int lua_register_net_proxy(lua_State *state)
 {
-	lua_register(L1,"network_host",lua_network_host);
-	lua_register(L1,"network_join",lua_network_join);
-	lua_register(L1,"network_send",lua_network_send);
-	lua_register(L1,"network_pump",lua_network_pump);
-	lua_register(L1,"network_quit",lua_network_quit);
-	lua_register(L1,"network_state",lua_network_state);
-	lua_register_network_flags();
+	lua_register(state,"network_host",lua_network_host);
+	lua_register(state,"network_join",lua_network_join);
+	lua_register(state,"network_send",lua_network_send);
+	lua_register(state,"network_pump",lua_network_pump);
+	lua_register(state,"network_quit",lua_network_quit);
+	lua_register(state,"network_state",lua_network_state);
+	lua_register_network_flags(state);
 	return 0;
 }
