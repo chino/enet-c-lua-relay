@@ -1,0 +1,15 @@
+make separate sleep, io.ready, and proxy modules that can be loaded dynamically or statically.
+
+support multiple connections in the proxy.
+
+make proxy use a module style such as connection=proxy:new(); connection:send(data) etc.
+
+a string lookup table for network_state_t could be used, or perhaps map obl.connected and obl.connecting properties ?
+
+define c99 booleans in the c code.
+
+add mingw cross compiler mode to the make file to produce win32 binaries ?
+
+use a documentation system to generate docs ?
+
+proxy should support passing new/lost connection events and network_packet_t should provide host/port information for the data packets.
