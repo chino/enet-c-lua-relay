@@ -143,11 +143,6 @@ void network_pump( network_event_t handler, void * context )
 	ENetEvent event;
 	if( ! enet_host )
 		return;
-	if( ! handler )
-	{
-		enet_host_service( enet_host, NULL, 0 );
-		return;
-	}
 	while( enet_host_service( enet_host, &event, 0 ) > 0 )
 	{
 		switch (event.type)
