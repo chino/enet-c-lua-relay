@@ -35,8 +35,7 @@ void lua_shutdown(void)
 
 static int lua_usleep(lua_State *state)
 {
-	int time = luaL_checkint(state,lua_gettop(state));
-	usleep(time);
+	usleep( luaL_checkint(state,-1) );
 	return 0;
 }
 

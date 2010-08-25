@@ -32,7 +32,7 @@ static void handle_packet( network_packet_t* packet, void* context )
 {
 	lua_State *state = context;
 	int error = 0;
-	lua_pushvalue(state,lua_gettop(state)); // dupe callback in case multiple packets
+	lua_pushvalue(state,-1); // because pcall will remove it
 	lua_pushlstring(state,(const char *)packet->data,packet->size);
 	error = lua_pcall(state,1,0,0);
 	if(error)
@@ -41,12 +41,12 @@ static void handle_packet( network_packet_t* packet, void* context )
 		printf("lua error handle_packet: %s\n",
 			ptr ? (char*)ptr : "unknown error" );
 	}
+	lua_pop(state,1);
 }
 
 static int lua_network_pump(lua_State *state)
 {	
 	network_pump( handle_packet, state );
-	lua_settop(state,0);
 	return 0;
 }
 
