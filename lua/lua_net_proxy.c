@@ -1,4 +1,4 @@
-#include "lua_common.h"
+#include "lua_headers.h"
 #include "net_proxy.h"
 
 static int lua_network_host(lua_State *state)

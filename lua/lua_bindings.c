@@ -1,5 +1,6 @@
-#include "lua_common.h"
+#include "lua_headers.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 int lua_usleep( lua_State *state )
 {

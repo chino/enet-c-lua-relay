@@ -1,6 +1,20 @@
-#include "lua_common.h"
+#include "lua_headers.h"
 #include "lua_bindings.h"
 #include "lua_net_proxy.h"
+
+static int lua_set_argv( lua_State* state, int argc, char ** argv )
+{
+	int i;
+	lua_newtable(state);
+	for( i = 0; i < argc; i++ )
+	{
+		lua_pushnumber(state,i);
+		lua_pushstring(state,argv[i]);
+		lua_settable(state,-3);
+	}
+	lua_setglobal(state,"ARGV");
+	return 0;
+}
 
 static void register_io_ready( lua_State* state )
 {
@@ -48,7 +62,7 @@ int main( int argc, char ** argv )
 		goto cleanup;
 	}
 
-	if( lua_dofile( L1, argv[1] ) )
+	if( luaL_dofile( L1, argv[1] ) )
 	{
 		printf( "lua: failed to dofile '%s'; %s\n",
 			argv[1], lua_tostring(L1,-1));
