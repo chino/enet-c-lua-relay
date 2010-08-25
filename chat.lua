@@ -1,5 +1,9 @@
 #!./lua/lua
 
+function sleep( ms )
+	usleep( 1000 * ms )
+end
+
 function die( str )
 	print(str)
 	os.exit(1)
@@ -8,13 +12,6 @@ end
 function send_text( line )
 	chat_channel = 0
 	network_send( line, #line, network_flags.reliable, chat_channel )
-end
-
-function check_input()
-	if io.ready() then
-		line = io.read()
-		send_text( line )
-	end
 end
 
 function host()
@@ -55,12 +52,14 @@ end
 
 -- main loop
 while true do
-	check_input()
+	if io.ready() then
+		send_text( io.read() )
+	end
 	network_pump(function( line )
 		print("> "..line)
 		if hosting then
 			send_text( line ) 
 		end
 	end)
-	usleep(1000*100) -- 100ms
+	sleep(100)
 end
