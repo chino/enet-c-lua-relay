@@ -79,15 +79,14 @@ static void lua_register_network_flags(void)
 {
 	int top;
 	lua_newtable(L1);
-	top = lua_gettop(L1);
 
 	lua_pushstring(L1,"reliable");
 	lua_pushnumber(L1,NETWORK_RELIABLE);
-	lua_settable(L1,top);
+	lua_settable(L1,-3);
 
 	lua_pushstring(L1,"sequenced");
 	lua_pushnumber(L1,NETWORK_SEQUENCED);
-	lua_settable(L1,top);
+	lua_settable(L1,-3);
 
 	lua_setglobal(L1,"network_flags");
 }
