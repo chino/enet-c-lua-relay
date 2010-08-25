@@ -27,9 +27,9 @@ typedef struct {
 } network_packet_t;
 
 // network_packet_t is only valid within the callback
-// so copy any data you want to  save
+// return 0 to continue enumerating
 
-typedef void (*network_event_t)( network_packet_t*, void* );
+typedef int (*network_event_t)( network_packet_t*, void* );
 
 void network_pump( network_event_t, void * );
 

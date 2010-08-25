@@ -28,15 +28,16 @@ static int lua_network_send(lua_State *state)
 	return 0;
 }
 
-static void handle_packet( network_packet_t* packet, void* context )
+static int handle_packet( network_packet_t* packet, void* context )
 {
 	lua_State *state = context;
-	lua_pushvalue(state,-1); // because pcall will remove it
+	lua_pushvalue(state,-1); // for next iteration
 	lua_pushlstring(state,(const char *)packet->data,packet->size);
-	if( lua_pcall(state,1,0,0) )
-		printf("lua: error in handle_packet %s\n",
-			lua_tostring(state,-1) );
-	lua_pop(state,1);
+	if( ! lua_pcall(state,1,1,0) )
+		return lua_tointeger(state,-1);
+	printf("lua: error in handle_packet %s\n",
+		lua_tostring(state,-1) );
+	return 0;
 }
 
 static int lua_network_pump(lua_State *state)

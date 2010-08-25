@@ -168,7 +168,8 @@ void network_pump( network_event_t handler, void * context )
 				network_packet_t packet;
 				packet.size = (int) event.packet->dataLength;
 				packet.data = (void*) event.packet->data;
-				handler( &packet, context );
+				if(handler( &packet, context ))
+					break;
 			}
 			enet_packet_destroy( event.packet );
 			break;
