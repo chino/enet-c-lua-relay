@@ -15,3 +15,5 @@ use a documentation system to generate docs ?
 proxy should support passing new/lost connection events and network_packet_t should provide host/port information for the data packets.
 
 chat.c could be broken down into more files for cleaner look
+
+simulation of network game with many players dumping statistics
