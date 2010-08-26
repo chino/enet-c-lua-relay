@@ -11,7 +11,7 @@ static int lua_network_host(lua_State *state)
 
 static int lua_network_join(lua_State *state)
 {
-	char* host = (char*) lua_tostring(state,-2);
+	char* host = (char*) luaL_checkstring(state,-2);
 	int port = luaL_checkint(state,-1);
 	lua_pushboolean(state,
 		network_join(host,port) == NETWORK_OK);
@@ -21,10 +21,10 @@ static int lua_network_join(lua_State *state)
 static int lua_network_send(lua_State *state)
 {
 	network_send(
-		(char*) lua_tostring(state,-4),   // data
-		        luaL_checkint(state,-3),  // size
-		        luaL_checkint(state,-2),  // flags
-		        luaL_checkint(state,-1)); // channel
+		(char*) luaL_checkstring(state,-4), // data
+		        luaL_checkint(state,-3),    // size
+		        luaL_checkint(state,-2),    // flags
+		        luaL_checkint(state,-1));   // channel
 	return 0;
 }
 
