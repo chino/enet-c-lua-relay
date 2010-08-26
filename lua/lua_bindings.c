@@ -21,6 +21,7 @@ int lua_stdin_ready( lua_State *state )
 	FD_SET(fileno(stdin), &readfds);
 
 	rv = select( fileno(stdin)+1, &readfds, NULL, NULL, &tv );
+
 	lua_pushboolean(state, rv > 0);
 
 	return 1;
