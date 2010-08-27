@@ -6,7 +6,7 @@ FLAGS=-pipe -g -fstack-protector-all
 CFLAGS+=-Wall -Wextra -D_FORTIFY_SOURCE=2 -I$(DIR) -I/usr/include/lua
 
 LIBS=-lenet -llua 
-INCLUDE=$(wildcard $(DIR)/*.h)
+INCLUDE=$(wildcard $(DIR)/*.h *.h)
 SRC=$(wildcard $(DIR)/*.c *.c)
 OBJS=$(patsubst %.c,%.o,$(SRC))
 
