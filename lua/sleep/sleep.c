@@ -3,19 +3,19 @@
 #include <lauxlib.h>
 #include <unistd.h>
 
-int l_usleep(lua_State *L)
+static int l_usleep(lua_State *L)
 {
 	usleep( luaL_checkint(L,-1) );
 	return 0;
 }
 
-int l_msleep(lua_State *L)
+static int l_msleep(lua_State *L)
 {
 	usleep( luaL_checkint(L,-1) * 1000 );
 	return 0;
 }
 
-int l_sleep(lua_State *L)
+static int l_sleep(lua_State *L)
 {
 	sleep( luaL_checkint(L,-1) );
 	return 0;

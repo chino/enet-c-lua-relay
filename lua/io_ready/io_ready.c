@@ -3,7 +3,7 @@
 #include <lauxlib.h>
 #include <stdlib.h>
 
-int l_io_ready(lua_State *L)
+static int l_io_ready(lua_State *L)
 {
 	int rv = 0, fn;
 	struct timeval tv;
