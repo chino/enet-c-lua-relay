@@ -1,13 +1,11 @@
 CC=gcc
 
-DIR=../proxy
-
 FLAGS=-pipe -g -fstack-protector-all
-CFLAGS+=-Wall -Wextra -D_FORTIFY_SOURCE=2 -I$(DIR) -I/usr/include/lua
+CFLAGS+=-Wall -Wextra -D_FORTIFY_SOURCE=2 -I/usr/include/lua
 
 LIBS=-lenet -llua 
-INCLUDE=$(wildcard $(DIR)/*.h *.h)
-SRC=$(wildcard $(DIR)/*.c *.c)
+INCLUDE=$(wildcard *.h)
+SRC=$(wildcard *.c)
 OBJS=$(patsubst %.c,%.o,$(SRC))
 
 BIN=lua

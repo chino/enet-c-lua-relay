@@ -4,6 +4,7 @@ package.cpath = "./lua/?/?.so;" .. package.cpath
 
 require 'sleep'
 require 'io_ready'
+require 'proxy'
 
 function die( str )
 	print(str)

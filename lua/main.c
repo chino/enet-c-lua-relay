@@ -1,5 +1,6 @@
-#include "lua_headers.h"
-#include "lua_net_proxy.h"
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 
 static int lua_set_argv( lua_State* state, int argc, char ** argv )
 {
@@ -37,12 +38,6 @@ int main( int argc, char ** argv )
 	if ( lua_set_argv( L1, argc, argv ) )
 	{
 		puts( "lua: failed to set ARGV" );
-		goto cleanup;
-	}
-
-	if ( lua_register_net_proxy(L1) )
-	{
-		puts( "lua: failed to register net proxy" );
 		goto cleanup;
 	}
 
