@@ -9,7 +9,17 @@ static int l_io_ready(lua_State *L)
 	struct timeval tv;
 	fd_set readfds;
 
-	fn = fileno(stdin); // ((FILE*)lua_touserdata(L,-1));
+	if(!lua_isuserdata(L,-1))
+	{
+		lua_getglobal(L,"io");
+		lua_getfield(L,-1,"input");
+		lua_call(L,0,0);
+		if(!lua_isuserdata(L,-1)) // BUG: io.input() should be stdin
+			goto finished;
+	}
+
+	fn = fileno(*(FILE**)lua_touserdata(L,-1));
+
 	if(fn == -1)
 		goto finished;
 		

@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-package.cpath = "./lua/?/?.so;" .. package.cpath
+package.cpath = "./lua/?/?.so;./?/?.so;" .. package.cpath
 
 require 'sleep'
 require 'io_ready'
@@ -54,7 +54,7 @@ end
 
 -- main loop
 while true do
-	if io.ready() then
+	if io.ready(io.input()) then
 		send_text( io.read() )
 	end
 	network_pump(function( line )
