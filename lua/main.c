@@ -8,11 +8,11 @@ static int lua_set_argv( lua_State* state, int argc, char ** argv )
 	lua_newtable(state);
 	for( i = 0; i < argc; i++ )
 	{
-		lua_pushnumber(state,i);
+		lua_pushnumber(state,i-1);
 		lua_pushstring(state,argv[i]);
 		lua_settable(state,-3);
 	}
-	lua_setglobal(state,"ARGV");
+	lua_setglobal(state,"arg");
 	return 0;
 }
 

@@ -1,4 +1,4 @@
-#!./lua/lua
+#!/usr/bin/env lua
 
 package.cpath = "./lua/?/?.so;" .. package.cpath
 
@@ -41,7 +41,7 @@ function join( host, port )
 end
 
 -- command line arguments
-ip, port = ARGV[2], ARGV[3]
+ip, port = arg[1], arg[2]
 
 -- host or join a host
 hosting = false
