@@ -1,19 +1,27 @@
-make separate sleep, io.ready, and proxy modules that can be loaded dynamically or statically.
-
 support multiple connections in the proxy.
 
-make proxy use a module style such as connection=proxy:new(); connection:send(data) etc.
+module style proxy bindings: 
+	connection=proxy:new(); connection:send(data);
 
-a string lookup table for network_state_t could be used, or perhaps map obl.connected and obl.connecting properties ?
+a string lookup table for network_state_t could be used,
+or perhaps map obl.connected and obl.connecting properties ?
 
 define c99 booleans in the c code.
 
-add mingw cross compiler mode to the make file to produce win32 binaries ?
+add mingw support with cross compiling?
 
-use a documentation system to generate docs ?
+use a documentation system to generate docs?
 
-proxy should support passing new/lost connection events and network_packet_t should provide host/port information for the data packets.
-
-chat.c could be broken down into more files for cleaner look
+break down chat.c into more files to make it look cleaner?
 
 simulation of network game with many players dumping statistics
+
+proxy:
+	events:
+		proxy should be updated to support new/lost connection events.
+	receive:
+		network_packet_t should provide host/port information for the data packets.
+	commands:
+		need way to send to a specific connection.
+		kick a specifiction connection.
+
