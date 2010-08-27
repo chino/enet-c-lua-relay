@@ -24,12 +24,6 @@ static void register_io_ready( lua_State* state )
 	lua_settable(state,-3);
 }
 
-static void lua_register_functions( lua_State* state )
-{
-	register_io_ready(state);
-	lua_register( state, "usleep", lua_usleep );
-}
-
 int main( int argc, char ** argv )
 {
 	lua_State *L1;
@@ -48,7 +42,7 @@ int main( int argc, char ** argv )
 	}
 
 	luaL_openlibs(L1);
-	lua_register_functions(L1);
+	register_io_ready(L1);
 
 	if ( lua_set_argv( L1, argc, argv ) )
 	{

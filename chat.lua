@@ -1,8 +1,8 @@
 #!./lua/lua
 
-function sleep( ms )
-	usleep( 1000 * ms )
-end
+package.cpath = "./lua/?/?.so;" .. package.cpath
+
+require 'sleep'
 
 function die( str )
 	print(str)
@@ -30,7 +30,7 @@ function join( host, port )
 	while network_state() == "connecting" do
 		network_pump(nil)
 		print("still connecting")
-		usleep(1000*100)
+		msleep(100)
 	end
 	if not network_state() == "connected" then
 		die("failed to connect to host")
@@ -61,5 +61,5 @@ while true do
 			send_text( line ) 
 		end
 	end)
-	sleep(100)
+	msleep(100)
 end
