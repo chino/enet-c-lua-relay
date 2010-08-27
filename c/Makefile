@@ -10,7 +10,7 @@ INCLUDE=$(wildcard $(DIR)/*.h)
 SRC=$(wildcard $(DIR)/*.c *.c)
 OBJS=$(patsubst %.c,%.o,$(SRC))
 
-BIN=../chat
+BIN=chat
 
 all: $(BIN)
 

@@ -24,10 +24,10 @@ clean:
 
 host:
 
-	./chat
-	./chat.lua
+	./c/chat
+	./lua/chat.lua
 
 join:
 
-	./chat <host> <port>
-	./chat.lua <host> <port>
+	./c/chat <host> <port>
+	./lua/chat.lua <host> <port>
