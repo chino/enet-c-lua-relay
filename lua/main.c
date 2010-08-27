@@ -1,5 +1,4 @@
 #include "lua_headers.h"
-#include "lua_bindings.h"
 #include "lua_net_proxy.h"
 
 static int lua_set_argv( lua_State* state, int argc, char ** argv )
@@ -14,14 +13,6 @@ static int lua_set_argv( lua_State* state, int argc, char ** argv )
 	}
 	lua_setglobal(state,"ARGV");
 	return 0;
-}
-
-static void register_io_ready( lua_State* state )
-{
-	lua_getglobal(state,"io");
-	lua_pushstring(state,"ready");
-	lua_pushcfunction(state,lua_stdin_ready);
-	lua_settable(state,-3);
 }
 
 int main( int argc, char ** argv )
@@ -42,7 +33,6 @@ int main( int argc, char ** argv )
 	}
 
 	luaL_openlibs(L1);
-	register_io_ready(L1);
 
 	if ( lua_set_argv( L1, argc, argv ) )
 	{
