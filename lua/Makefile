@@ -17,7 +17,7 @@ all: $(BIN)
 $(BIN): $(OBJS)
 	$(CC) -o $(BIN) $(OBJS) $(LDFLAGS) $(LIBS)
 
-$(OBJS): $(INCLUDE)
+$(OBJS): $(INCLUDE) $(SRC)
 
 clean:
 	$(RM) $(OBJS) $(BIN) $(TAGS)
