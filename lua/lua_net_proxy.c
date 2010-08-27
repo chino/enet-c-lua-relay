@@ -36,13 +36,10 @@ static int lua_network_send(lua_State *state)
 static int handle_packet( network_packet_t* packet, void* context )
 {
 	lua_State *state = context;
-	lua_pushvalue(state,-1); // for next iteration
+	lua_pushvalue(state,-1);
 	lua_pushlstring(state,(const char *)packet->data,packet->size);
-	if( ! lua_pcall(state,1,1,0) )
-		return lua_tointeger(state,-1);
-	printf("lua: error in handle_packet %s\n",
-		lua_tostring(state,-1) );
-	return 0;
+	lua_call(state,1,1);
+	return lua_tointeger(state,-1);
 }
 
 static int lua_network_pump(lua_State *state)
