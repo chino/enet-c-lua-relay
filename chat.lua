@@ -56,7 +56,7 @@ while true do
 		send_text( io.read() )
 	end
 	network_pump(function( line )
-		print("> ",line)
+		print("> "..line)
 		if hosting then
 			send_text( line ) 
 		end
