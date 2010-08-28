@@ -2,7 +2,7 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
-static int lua_set_argv( lua_State* state, int argc, char ** argv )
+static void l_set_arg( lua_State* state, int argc, char ** argv )
 {
 	int i;
 	lua_newtable(state);
@@ -35,19 +35,13 @@ int main( int argc, char ** argv )
 
 	luaL_openlibs(L1);
 
-	if ( lua_set_argv( L1, argc, argv ) )
-	{
-		puts( "lua: failed to set ARGV" );
-		goto cleanup;
-	}
+	l_set_arg( L1, argc, argv );
 
 	if( luaL_dofile( L1, argv[1] ) )
 	{
 		printf( "lua: failed to dofile '%s'; %s\n",
 			argv[1], lua_tostring(L1,-1));
 	}
-
-cleanup:
 
 	if(L1)
 		lua_close(L1);
