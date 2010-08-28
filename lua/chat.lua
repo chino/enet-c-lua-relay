@@ -1,22 +1,29 @@
 #!/usr/bin/env lua
-
 package.cpath = "./lua/?/?.so;./?/?.so;" .. package.cpath
-
 require 'sleep'
 require 'io_ready'
 require 'net'
 
-function die( str )
-	print(str)
-	os.exit(1)
-end
+function die( str ) print(str); os.exit(1) end
 
-function send_text( line )
-	chat_channel = 0
-	net.send( line, #line, net.flags.reliable, chat_channel )
-end
+ip, port = arg[1], arg[2]
 
-function host()
+if ip and port then
+	hosting = false
+	if not net.join( ip, port ) then
+		die("failed to join")
+	end
+	print("connecting to ip")
+	while net.state() == "connecting" do
+		net.pump(nil)
+		print("still connecting")
+		msleep(100)
+	end
+	if not net.state() == "connected" then
+		die("failed to connect to ip")
+	end
+	print("connected")
+else
 	hosting = true
 	if not net.host( 2300 ) then
 		die("failed to host")
@@ -24,35 +31,8 @@ function host()
 	print("waiting for connections")
 end
 
-function join( host, port )
-	if not net.join( host, port ) then
-		die("failed to join")
-	end
-	print("connecting to host")
-	while net.state() == "connecting" do
-		net.pump(nil)
-		print("still connecting")
-		msleep(100)
-	end
-	if not net.state() == "connected" then
-		die("failed to connect to host")
-	end
-	print("connected")
-end
+CHAT_CHANNEL=0
 
--- command line arguments
-ip, port = arg[1], arg[2]
-
--- host or join a host
-hosting = false
-if ip and port then
-	join( ip, port )
-else
-	hosting = true
-	host()
-end
-
--- main loop
 while true do
 	if io.ready(io.input()) then
 		send_text( io.read() )
@@ -60,7 +40,7 @@ while true do
 	net.pump(function( line )
 		print("> "..line)
 		if hosting then
-			send_text( line ) 
+			net.send( line, #line, net.flags.reliable, CHAT_CHANNEL )
 		end
 	end)
 	msleep(100)
