@@ -19,7 +19,7 @@ if ip and port then
 		print("still connecting")
 		msleep(100)
 	end
-	if not net.state() == "connected" then
+	if net.state() != "connected" then
 		die("failed to connect to ip")
 	end
 	print("connected")
