@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
-package.cpath = "./lua/?/?.so;" .. package.cpath
+package.cpath = "./lua/lib/?/?.so;" .. package.cpath
 require 'sleep'
 require 'io_ready'
 require 'net'

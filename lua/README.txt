@@ -1,8 +1,14 @@
-embed:
+lua.c:
 
-	sample showing how to embed lua.
+	example c program which embeds lua
 
-*/ (sub-folders):
+	note that the stand alone lua interpreter is exactly the same thing as this
+
+	it supports running a single lua file as the first argument
+
+	thus you can also run the chat.lua program using it
+
+lib/:
 
 	contain modules which are compiled into shared objects (.so/.dll)
 
