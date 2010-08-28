@@ -41,7 +41,7 @@ while true do
 	net.pump(function( line )
 		print("> "..line)
 		if hosting then
-			send_msg( line, #line, net.flags.reliable, CHAT_CHANNEL )
+			send_msg( line )
 		end
 	end)
 	msleep(100)
