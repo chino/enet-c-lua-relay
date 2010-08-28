@@ -1,13 +1,10 @@
-lua/main.c -> lua/lua:
+chat.lua:
 
-	example c program which embeds lua
+	sample chat client which uses the net library.
 
-	note that the stand alone lua interpreter is exactly the same thing
+embed:
 
-	it supports running a single lua file as the first argument
-
-	thus you can also run the chat.lua program like this: ./lua/lua ./lua/chat.lua
-
+	sample showing how to embed lua.
 
 */ (sub-folders):
 
