@@ -1,4 +1,4 @@
-BIN=chat
+BIN=../chat
 DIR=../net
 LIBS=-lenet
 CFLAGS+=-I$(DIR)

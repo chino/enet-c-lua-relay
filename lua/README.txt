@@ -1,7 +1,3 @@
-chat.lua:
-
-	sample chat client which uses the net library.
-
 embed:
 
 	sample showing how to embed lua.
