@@ -32,16 +32,16 @@ else
 end
 
 CHAT_CHANNEL=0
-function msg(line) net.send( line, #line, net.flags.reliable, CHAT_CHANNEL ) end
+function send_msg(line) net.send( line, #line, net.flags.reliable, CHAT_CHANNEL ) end
 
 while true do
 	if io.ready(io.input()) then
-		msg( io.read() )
+		send_msg( io.read() )
 	end
 	net.pump(function( line )
 		print("> "..line)
 		if hosting then
-			msg( line, #line, net.flags.reliable, CHAT_CHANNEL )
+			send_msg( line, #line, net.flags.reliable, CHAT_CHANNEL )
 		end
 	end)
 	msleep(100)
