@@ -1,9 +1,10 @@
-DIRS=`find */* -name 'Makefile' | xargs -n 1 dirname`
+dirs=`find */* -name 'Makefile' | xargs -n 1 dirname`
+make=for dir in $(dirs); do cd $$dir; make $(1); cd -; done
 
 all:
-	for dir in $(DIRS); do cd $$dir; make; cd -; done
+	$(call make,all)
 
 clean:
-	for dir in $(DIRS); do cd $$dir; make clean; cd -; done
+	$(call make,clean)
 
 .PHONY: all clean
