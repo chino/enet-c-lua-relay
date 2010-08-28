@@ -1,10 +1,7 @@
 support multiple connections in the proxy.
 
-module style proxy bindings: 
-	connection=proxy:new(); connection:send(data);
-
 a string lookup table for network_state_t could be used,
-or perhaps map obl.connected and obl.connecting properties ?
+or perhaps map obj.connected and obj.connecting properties ?
 
 define c99 booleans in the c code.
 
@@ -16,6 +13,8 @@ break down chat.c into more files to make it look cleaner?
 
 simulation of network game with many players dumping statistics
 
+implement one of the modules using the init.lua technique?
+
 proxy:
 	events:
 		proxy should be updated to support new/lost connection events.
@@ -23,5 +22,4 @@ proxy:
 		network_packet_t should provide host/port information for the data packets.
 	commands:
 		need way to send to a specific connection.
-		kick a specifiction connection.
-
+		kick a specific connection.
