@@ -4,7 +4,7 @@ package.cpath = "./lua/?/?.so;./?/?.so;" .. package.cpath
 
 require 'sleep'
 require 'io_ready'
-require 'proxy'
+require 'net'
 
 function die( str )
 	print(str)
@@ -13,28 +13,28 @@ end
 
 function send_text( line )
 	chat_channel = 0
-	network_send( line, #line, network_flags.reliable, chat_channel )
+	net.send( line, #line, net.flags.reliable, chat_channel )
 end
 
 function host()
 	hosting = true
-	if not network_host( 2300 ) then
+	if not net.host( 2300 ) then
 		die("failed to host")
 	end
 	print("waiting for connections")
 end
 
 function join( host, port )
-	if not network_join( host, port ) then
+	if not net.join( host, port ) then
 		die("failed to join")
 	end
 	print("connecting to host")
-	while network_state() == "connecting" do
-		network_pump(nil)
+	while net.state() == "connecting" do
+		net.pump(nil)
 		print("still connecting")
 		msleep(100)
 	end
-	if not network_state() == "connected" then
+	if not net.state() == "connected" then
 		die("failed to connect to host")
 	end
 	print("connected")
@@ -57,7 +57,7 @@ while true do
 	if io.ready(io.input()) then
 		send_text( io.read() )
 	end
-	network_pump(function( line )
+	net.pump(function( line )
 		print("> "..line)
 		if hosting then
 			send_text( line ) 

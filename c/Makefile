@@ -1,25 +1,21 @@
+include Makefile.inc
+
 CC=gcc
+SRC+= $(wildcard *.c)
+OBJ+= $(patsubst %.c,%.o,$(SRC))
+HEADERS+= $(wildcard *.h)
 
-DIR=../proxy
-
-FLAGS=-pipe -g -fstack-protector-all
-CFLAGS+=-Wall -Wextra -D_FORTIFY_SOURCE=2 -I$(DIR)
-
-LIBS=-lenet
-INCLUDE=$(wildcard $(DIR)/*.h)
-SRC=$(wildcard $(DIR)/*.c *.c)
-OBJS=$(patsubst %.c,%.o,$(SRC))
-
-BIN=chat
+FLAGS+=-pipe -g -fstack-protector-all
+CFLAGS+=-Wall -Wextra -D_FORTIFY_BINURCE=2 -I. -I/usr/include/lua
 
 all: $(BIN)
 
-$(BIN): $(OBJS)
-	$(CC) -o $(BIN) $(OBJS) $(LDFLAGS) $(LIBS)
+$(BIN): $(OBJ)
+	$(CC) $(FLAGS) -o $(BIN) $(OBJ) $(LIBS)
 
-$(OBJS): $(INCLUDE) $(SRC)
+$(OBJ): $(HEADERS) $(SRC)
 
 clean:
-	$(RM) $(OBJS) $(BIN) $(TAGS)
+	$(RM) $(OBJ) $(BIN) $(TAGS)
 
 .PHONY: all clean

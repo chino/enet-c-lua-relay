@@ -1,9 +1,9 @@
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
-#include "net_proxy.h"
+#include "net.h"
 
-int l_network_host(lua_State *L)
+static int l_network_host(lua_State *L)
 {
 	lua_pushboolean(L,
 		NETWORK_OK == network_host(
@@ -13,7 +13,7 @@ int l_network_host(lua_State *L)
 	return 1;
 }
 
-int l_network_join(lua_State *L)
+static int l_network_join(lua_State *L)
 {
 	lua_pushboolean(L,
 		NETWORK_OK == network_join(
@@ -24,7 +24,7 @@ int l_network_join(lua_State *L)
 	return 1;
 }
 
-int l_network_send(lua_State *L)
+static int l_network_send(lua_State *L)
 {
 	network_send(
 		(char*) luaL_checkstring(L,-4), // data
@@ -35,7 +35,7 @@ int l_network_send(lua_State *L)
 	return 0;
 }
 
-int handle_packet( network_packet_t* packet, void* context )
+static int handle_packet( network_packet_t* packet, void* context )
 {
 	lua_State *L = context;
 	lua_pushvalue(L,-1);
@@ -44,13 +44,13 @@ int handle_packet( network_packet_t* packet, void* context )
 	return lua_tointeger(L,-1);
 }
 
-int l_network_pump(lua_State *L)
+static int l_network_pump(lua_State *L)
 {	
 	network_pump( handle_packet, L );
 	return 0;
 }
 
-int l_network_state(lua_State *L)
+static int l_network_state(lua_State *L)
 {
 	switch( network_state )
 	{
@@ -69,35 +69,39 @@ int l_network_state(lua_State *L)
 	return 1;
 }
 
-int l_network_quit(lua_State *L)
+static int l_network_quit(lua_State *L)
 {
 	network_quit();
 	return 0;
 }
 
-void l_register_network_flags(lua_State *L)
+#define SET_NUMBER(L,name,number)\
+	lua_pushstring(L,name);\
+	lua_pushnumber(L,number);\
+	lua_settable(L,-3);
+
+static void create_flags(lua_State *L)
 {
-	lua_newtable(L);
-
-	lua_pushstring(L,"reliable");
-	lua_pushnumber(L,NETWORK_RELIABLE);
+	lua_pushstring(L,"flags");
+	lua_createtable(L,0,2);
+	SET_NUMBER(L,"reliable",NETWORK_RELIABLE);
+	SET_NUMBER(L,"sequenced",NETWORK_SEQUENCED);
 	lua_settable(L,-3);
-
-	lua_pushstring(L,"sequenced");
-	lua_pushnumber(L,NETWORK_SEQUENCED);
-	lua_settable(L,-3);
-
-	lua_setglobal(L,"network_flags");
 }
 
-int luaopen_proxy(lua_State *L)
+static const struct luaL_Reg net [] = {
+	{"host",l_network_host},
+	{"join",l_network_join},
+	{"send",l_network_send},
+	{"pump",l_network_pump},
+	{"quit",l_network_quit},
+	{"state",l_network_state},
+	{NULL,NULL},
+};
+
+int luaopen_net(lua_State *L)
 {
-	lua_register(L,"network_host",l_network_host);
-	lua_register(L,"network_join",l_network_join);
-	lua_register(L,"network_send",l_network_send);
-	lua_register(L,"network_pump",l_network_pump);
-	lua_register(L,"network_quit",l_network_quit);
-	lua_register(L,"network_state",l_network_state);
-	l_register_network_flags(L);
+	luaL_register(L, "net", net);
+	create_flags(L);
 	return 1;
 }

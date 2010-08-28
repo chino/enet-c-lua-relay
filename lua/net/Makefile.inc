@@ -1,5 +1,5 @@
-SO=proxy.so
-DIR=../../proxy
+SO=net.so
+DIR=../../net
 LIBS=-lenet
 CFLAGS+=-I$(DIR)
 SRC+=$(wildcard $(DIR)/*.c)

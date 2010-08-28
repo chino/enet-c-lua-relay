@@ -1,4 +1,4 @@
-#include "net_proxy.h"
+#include "net.h"
 #include "enet/enet.h"
 #include <stdio.h>
 #include <string.h>
@@ -79,7 +79,7 @@ static enet_uint32 convert_flags( network_flags_t flags )
 
 /*
  *
- *  net_proxy.h interface
+ *  net.h interface
  *
  */
 
