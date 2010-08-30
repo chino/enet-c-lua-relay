@@ -13,16 +13,6 @@ if ip and port then
 	if not net.join( ip, port ) then
 		die("failed to join")
 	end
-	print("connecting to ip")
-	while net.state() == "connecting" do
-		net.pump(nil)
-		print("still connecting")
-		msleep(100)
-	end
-	if net.state() ~= "connected" then
-		die("failed to connect to ip")
-	end
-	print("connected")
 else
 	hosting = true
 	if not net.host( 2300 ) then
@@ -39,15 +29,10 @@ while true do
 		send_msg( io.read() )
 	end
 	net.pump(function( event, from, data )
-		if (event == "connect") then
-			print("connect from "..from)
-		elseif (event == "disconnect") then
-			print("disconnect from "..from)
-		elseif (event == "data") then
-			print(from.." > "..data)
-			if hosting then
-				send_msg( data )
-			end
+		if not data then data = "" end
+		print(event.." from "..from.." "..data)
+		if event ~= "data" and hosting then
+			send_msg( data )
 		end
 	end)
 	msleep(100)
