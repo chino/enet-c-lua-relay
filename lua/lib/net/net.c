@@ -35,12 +35,35 @@ static int l_network_send(lua_State *L)
 	return 0;
 }
 
-static int handle_packet( network_packet_t* packet, void* context )
+static int handle_packet( network_event_t type, void* data, void* context )
 {
 	lua_State *L = context;
+	if(lua_isnil(L,-1))
+		return 0;
 	lua_pushvalue(L,-1);
-	lua_pushlstring(L,(const char *)packet->data,packet->size);
-	lua_call(L,1,1);
+	switch(type)
+	{
+	case NETWORK_EVENT_CONNECT:
+	case NETWORK_EVENT_DISCONNECT:
+		{
+			network_connection_t* connection = data;
+			lua_pushstring(L, type == NETWORK_EVENT_CONNECT ?
+				"connect" : "disconnect" );
+			lua_pushfstring(L,"%s:%d", connection->ip, connection->port);
+			lua_call(L,2,1);
+		}
+		break;
+	case NETWORK_EVENT_PACKET:
+		{
+			network_packet_t* packet = data;
+			network_connection_t* connection = packet->from;
+			lua_pushstring(L,"data");
+			lua_pushfstring(L,"%s:%d", connection->ip, connection->port);
+			lua_pushlstring(L,(const char *) packet->data, packet->size);
+			lua_call(L,3,1);
+		}
+		break;
+	}
 	return lua_tointeger(L,-1);
 }
 

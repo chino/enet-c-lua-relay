@@ -38,10 +38,16 @@ while true do
 	if io.ready(io.input()) then
 		send_msg( io.read() )
 	end
-	net.pump(function( line )
-		print("> "..line)
-		if hosting then
-			send_msg( line )
+	net.pump(function( event, from, data )
+		if (event == "connect") then
+			print("connect from "..from)
+		elseif (event == "disconnect") then
+			print("disconnect from "..from)
+		elseif (event == "data") then
+			print(from.." > "..data)
+			if hosting then
+				send_msg( data )
+			end
 		end
 	end)
 	msleep(100)

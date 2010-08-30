@@ -138,7 +138,7 @@ void network_send( void* data, int size, network_flags_t flags, int channel )
 	enet_host_flush( enet_host );
 }
 
-void network_pump( network_event_t handler, void * context )
+void network_pump( network_event_callback_t handler, void * context )
 {
 	ENetEvent event;
 	if( ! enet_host )
@@ -148,22 +148,45 @@ void network_pump( network_event_t handler, void * context )
 		switch (event.type)
 		{
 		case ENET_EVENT_TYPE_CONNECT:
-			if(event.peer == host_peer)
-				network_state = NETWORK_CONNECTED;
-			printf("enet new connection from %s\n",
-				address_to_str(&event.peer->address));
-			break;
 		case ENET_EVENT_TYPE_DISCONNECT:
-			printf("enet lost connection from %s\n",
-				address_to_str(&event.peer->address));
+			if(event.peer == host_peer)
+			{
+				if(event.type == ENET_EVENT_TYPE_CONNECT)
+					network_state = NETWORK_CONNECTED;
+				else
+					network_state = NETWORK_DISCONNECTED;
+			}
+			if(handler)
+			{
+				network_event_t type = 
+					(event.type == ENET_EVENT_TYPE_CONNECT) ? 
+						NETWORK_EVENT_CONNECT: 
+						NETWORK_EVENT_DISCONNECT;
+				network_connection_t connection;
+				connection.port = event.peer->address.port;
+				enet_address_get_host_ip(
+					&event.peer->address,
+					connection.ip,
+					sizeof(connection.ip)
+				);
+				handler( type, &connection, context );
+			}
 			break;
 		case ENET_EVENT_TYPE_RECEIVE:
 			if(handler)
 			{
 				network_packet_t packet;
+				network_connection_t connection;
+				connection.port = event.peer->address.port;
+				enet_address_get_host_ip(
+					&event.peer->address,
+					connection.ip,
+					sizeof(connection.ip)
+				);
+				packet.from = &connection;
 				packet.size = (int) event.packet->dataLength;
 				packet.data = (void*) event.packet->data;
-				if(handler( &packet, context ))
+				if(handler( NETWORK_EVENT_PACKET, &packet, context ))
 					break;
 			}
 			enet_packet_destroy( event.packet );

@@ -71,14 +71,38 @@ void send_message( char* line )
 		NETWORK_RELIABLE, CHAT_CHANNEL );
 }
 
-int handle_packet( network_packet_t* packet, void* context )
+int handle_packet( network_event_t type, void* data, void* context )
 {
-	char message[packet->size+1];
-	strncpy( message, (char*)packet->data, packet->size+1 );
-	printf( "> %s\n", message );
-	if(hosting)
-		send_message( message );
-	return 0;
+	switch (type)
+	{
+	case NETWORK_EVENT_CONNECT:
+	case NETWORK_EVENT_DISCONNECT:
+		{
+			network_connection_t* connection = data;
+			printf("-- %s from %s:%d\n",
+				(type == NETWORK_EVENT_CONNECT) ?
+					"connect" : "disconnect",
+				connection->ip,
+				connection->port
+			);
+		}
+		break;
+	case NETWORK_EVENT_PACKET:
+		{
+			network_packet_t* packet = data;
+			char message[packet->size+1];
+			strncpy( message, (char*)packet->data, packet->size+1 );
+			printf( "%s:%d > %s\n",
+				packet->from->ip,
+				packet->from->port,
+				message 
+			);
+			if(hosting) // proxy to clients
+				send_message( message );
+		}
+		break;
+	}
+	return 0;	
 }
 
 void check_input( void );

@@ -21,17 +21,31 @@ network_return_t network_host( int local_port );
 
 void network_quit();
 
+#define INET_ADDRSTRLEN 16
+
 typedef struct {
+	int port;
+	char ip[INET_ADDRSTRLEN];
+} network_connection_t;
+
+typedef struct {
+	network_connection_t* from;
 	int size;
 	void* data;
 } network_packet_t;
 
-// network_packet_t is only valid within the callback
+typedef enum {
+	NETWORK_EVENT_CONNECT,    // data = network_connection_t
+	NETWORK_EVENT_DISCONNECT, // data = network_connection_t
+	NETWORK_EVENT_PACKET      // data = network_packet_t
+} network_event_t;
+
 // return 0 to continue enumerating
+// *data is only valid within the callback
 
-typedef int (*network_event_t)( network_packet_t*, void* );
+typedef int (*network_event_callback_t)( network_event_t, void* data, void* context );
 
-void network_pump( network_event_t, void * );
+void network_pump( network_event_callback_t, void * );
 
 // valid flag combinations:
 //
