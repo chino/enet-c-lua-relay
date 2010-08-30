@@ -84,8 +84,9 @@ static void create_flags(lua_State *L)
 {
 	lua_pushstring(L,"flags");
 	lua_createtable(L,0,2);
-	SET_NUMBER(L,"reliable",NETWORK_RELIABLE);
-	SET_NUMBER(L,"sequenced",NETWORK_SEQUENCED);
+	SET_NUMBER(L,"reliable",  NETWORK_RELIABLE);
+	SET_NUMBER(L,"unreliable",NETWORK_UNRELIABLE);
+	SET_NUMBER(L,"sequenced", NETWORK_SEQUENCED);
 	lua_settable(L,-3);
 }
 

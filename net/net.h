@@ -35,9 +35,9 @@ void network_pump( network_event_t, void * );
 
 // valid flag combinations:
 //
-//   unreliable + unsequenced - default
-//   unreliable + sequenced   - delivers instantly and drops late packets
-//     reliable               - gauranteed delivery and sequencing
+//   sequenced  = unreliable + sequenced   - delivers instantly and drops late packets
+//   unreliable = unreliable + unsequenced - no reliability or sequencing (like udp)
+//   reliable   =   reliable + sequenced   - gauranteed delivery and sequencing (like tcp)
 //
 // channels:
 //
@@ -58,8 +58,9 @@ void network_pump( network_event_t, void * );
 //   data passed to network_send is coppied so you are safe to cleanup the data right away
 
 typedef enum {
-	 NETWORK_RELIABLE  = 2,
-	 NETWORK_SEQUENCED = 4
+	NETWORK_UNRELIABLE  = 0,
+	NETWORK_RELIABLE    = 2,
+	NETWORK_SEQUENCED   = 4
 } network_flags_t;
 
 void network_send( void* data, int size, network_flags_t flags, int channel );
