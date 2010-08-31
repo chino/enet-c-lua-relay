@@ -28,8 +28,7 @@ while true do
 		send_msg( io.read() )
 	end
 	net.pump(function( event, from, data )
-		if not data then data = "" end
-		print(event.." from "..from.." "..data)
+		print(event.." from "..from.." "..(data or ""))
 		if event ~= "data" and hosting then
 			send_msg( data )
 		end
