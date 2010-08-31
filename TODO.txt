@@ -1,25 +1,7 @@
-support multiple connections in the proxy.
+net:
+		need way to send to a specific connection
+		disconnect a specific connection
 
-a string lookup table for network_state_t could be used,
-or perhaps map obj.connected and obj.connecting properties ?
-
-define c99 booleans in the c code.
-
-add mingw support with cross compiling?
-
-use a documentation system to generate docs?
-
-break down chat.c into more files to make it look cleaner?
+implement one of the modules using the init.lua technique ?
 
 simulation of network game with many players dumping statistics
-
-implement one of the modules using the init.lua technique?
-
-proxy:
-	events:
-		proxy should be updated to support new/lost connection events.
-	receive:
-		network_packet_t should provide host/port information for the data packets.
-	commands:
-		need way to send to a specific connection.
-		kick a specific connection.
