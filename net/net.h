@@ -21,7 +21,7 @@ network_return_t network_host( int local_port );
 
 void network_quit();
 
-#define INET_ADDRSTRLEN 16
+#define INET_ADDRSTRLEN 16 // 255.255.255.255\0
 
 typedef struct {
 	int port;
