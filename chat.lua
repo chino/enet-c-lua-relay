@@ -6,13 +6,12 @@ require 'net'
 
 function die( str ) print(str); os.exit(1) end
 
-ip, port = arg[1], arg[2]
-
-if ip and port then
+if #arg == 2 then
 	hosting = false
-	if not net.join( ip, port ) then
+	if not net.join( arg[1], arg[2] ) then
 		die("failed to join")
 	end
+	print("connecting to host")
 else
 	hosting = true
 	if not net.host( 2300 ) then
