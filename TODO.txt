@@ -1,6 +1,4 @@
-net:
-		need way to send to a specific connection
-		disconnect a specific connection
+need way to send to a specific connection in lua
 
 implement one of the modules using the init.lua technique ?
 
