@@ -17,8 +17,9 @@ static int l_network_join(lua_State *L)
 {
 	lua_pushboolean(L,
 		NETWORK_OK == network_join(
-			(char*) luaL_checkstring(L,-2), // host
-			        luaL_checkint(L,-1)     // port
+			(char*)
+			luaL_checkstring(L,-2), // host
+			luaL_checkint(L,-1)     // port
 		)
 	);
 	return 1;
