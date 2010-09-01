@@ -24,13 +24,14 @@ static int l_network_join(lua_State *L)
 	return 1;
 }
 
-static int l_network_send(lua_State *L)
+static int l_network_broadcast(lua_State *L)
 {
-	network_send(
-		(char*) luaL_checkstring(L,-4), // data
-		        luaL_checkint(L,-3),    // size
-		        luaL_checkint(L,-2),    // flags
-		        luaL_checkint(L,-1)     // channel
+	network_broadcast(
+		(char*)
+		luaL_checkstring(L,-4), // data
+		luaL_checkint(L,-3),    // size
+		luaL_checkint(L,-2),    // flags
+		luaL_checkint(L,-1)     // channel
 	);
 	return 0;
 }
@@ -116,10 +117,10 @@ static void create_flags(lua_State *L)
 static const struct luaL_Reg net [] = {
 	{"host",l_network_host},
 	{"join",l_network_join},
-	{"send",l_network_send},
 	{"pump",l_network_pump},
 	{"quit",l_network_quit},
 	{"state",l_network_state},
+	{"broadcast",l_network_broadcast},
 	{NULL,NULL},
 };
 

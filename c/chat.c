@@ -67,7 +67,7 @@ int setup_network( void )
 
 void send_message( char* line )
 {
-	network_send( (void*) line, strlen(line)+1,
+	network_broadcast((void*) line, strlen(line)+1,
 		NETWORK_RELIABLE, CHAT_CHANNEL );
 }
 
@@ -120,6 +120,7 @@ int main( int argc, char ** argv )
 	{
 		check_input();
 		network_pump( handle_packet, NULL );
+		network_flush();
 		usleep(1000*100); // 100ms, 0.1s
 	}
 

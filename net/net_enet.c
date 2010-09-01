@@ -127,15 +127,33 @@ void network_quit( void )
 	network_state = NETWORK_DISCONNECTED;
 }
 
-void network_send( void* data, int size, network_flags_t flags, int channel )
+void network_broadcast( void* data, int size, network_flags_t flags, int channel )
+{
+	return network_send(NULL,data,size,flags,channel);
+}
+
+void network_send( network_connection_t* connection, void* data, int size, network_flags_t flags, int channel )
 {
 	ENetPacket * packet;
-	if( enet_host == NULL ) return;
-	if(!data) return;
+	if( ! enet_host || ! data) return;
 	packet = enet_packet_create( data, size, convert_flags( flags ) );
-	if( packet == NULL ) return;
-	enet_host_broadcast( enet_host, channel, packet );
-	enet_host_flush( enet_host );
+	if(!packet) return;
+	if(connection)
+		enet_peer_send( (ENetPeer*)connection->ptr, channel, packet );
+	else
+		enet_host_broadcast( enet_host, channel, packet );
+}
+
+void network_flush( void )
+{
+	if(enet_host)
+		enet_host_flush( enet_host );
+}
+
+void network_disconnect( network_connection_t * connection )
+{
+	if(enet_host && connection)
+		enet_peer_disconnect_now( (ENetPeer*) connection->ptr, 0 );
 }
 
 void network_pump( network_event_callback_t handler, void * context )
@@ -163,6 +181,7 @@ void network_pump( network_event_callback_t handler, void * context )
 						NETWORK_EVENT_CONNECT: 
 						NETWORK_EVENT_DISCONNECT;
 				network_connection_t connection;
+				connection.ptr = event.peer;
 				connection.port = event.peer->address.port;
 				enet_address_get_host_ip(
 					&event.peer->address,
@@ -177,6 +196,7 @@ void network_pump( network_event_callback_t handler, void * context )
 			{
 				network_packet_t packet;
 				network_connection_t connection;
+				connection.ptr = event.peer;
 				connection.port = event.peer->address.port;
 				enet_address_get_host_ip(
 					&event.peer->address,

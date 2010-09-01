@@ -21,7 +21,7 @@ else
 end
 
 CHAT_CHANNEL=0
-function send_msg(line) net.send( line, #line, net.flags.reliable, CHAT_CHANNEL ) end
+function send_msg(line) net.broadcast( line, #line, net.flags.reliable, CHAT_CHANNEL ) end
 
 while true do
 	if io.ready(io.input()) then

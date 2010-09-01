@@ -7,8 +7,6 @@ typedef enum {
 	NETWORK_DISCONNECTED,
 } network_state_t;
 
-network_state_t network_state;
-
 typedef enum {
 	NETWORK_OK,
 	NETWORK_FAIL,
@@ -16,14 +14,10 @@ typedef enum {
 	NETWORK_ERROR_BIND
 } network_return_t;
 
-network_return_t network_join( char* address, int port );
-network_return_t network_host( int local_port );
-
-void network_quit();
-
 #define INET_ADDRSTRLEN 16 // 255.255.255.255\0
 
 typedef struct {
+	void* ptr; // internal use
 	int port;
 	char ip[INET_ADDRSTRLEN];
 } network_connection_t;
@@ -39,6 +33,17 @@ typedef enum {
 	NETWORK_EVENT_DISCONNECT, // data = network_connection_t
 	NETWORK_EVENT_PACKET      // data = network_packet_t
 } network_event_t;
+
+// Interface
+
+network_state_t  network_state;
+network_return_t network_join( char* address, int port );
+network_return_t network_host( int local_port );
+
+void network_quit(void);
+void network_flush(void);
+
+void network_disconnect( network_connection_t* );
 
 // return 0 to continue enumerating
 // *data is only valid within the callback
@@ -77,6 +82,7 @@ typedef enum {
 	NETWORK_SEQUENCED   = 4
 } network_flags_t;
 
-void network_send( void* data, int size, network_flags_t flags, int channel );
+void network_broadcast( void* data, int size, network_flags_t flags, int channel );
+void network_send( network_connection_t*, void* data, int size, network_flags_t, int channel );
 
 #endif // NET_INCLUDED
