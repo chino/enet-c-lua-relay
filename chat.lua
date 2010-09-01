@@ -28,10 +28,11 @@ while true do
 		send_msg( io.read() )
 	end
 	net.pump(function( event, from, data )
-		print(event.." from "..from.." "..(data or ""))
-		if event ~= "data" and hosting then
+		print( event.." from "..from.ip..":"..from.port.." "..(data or ""))
+		if event == "data" and hosting then
 			send_msg( data )
 		end
 	end)
+	net.flush()
 	msleep(100)
 end

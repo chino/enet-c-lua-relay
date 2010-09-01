@@ -1,4 +1,6 @@
-need way to send to a specific connection in lua
+figure out better place to store the network_connection_t* in the lua binding.
+
+use a meta table for the 'from' table so it can have an address="host:port" helper ?
 
 implement one of the modules using the init.lua technique ?
 

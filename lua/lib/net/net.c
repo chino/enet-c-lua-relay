@@ -3,6 +3,16 @@
 #include <lauxlib.h>
 #include "net.h"
 
+#define SET_NUMBER(L,name,number)\
+	lua_pushstring(L,name);\
+	lua_pushnumber(L,number);\
+	lua_settable(L,-3);
+
+#define SET_STRING(L,name,string)\
+	lua_pushstring(L,name);\
+	lua_pushstring(L,string);\
+	lua_settable(L,-3);
+
 static int l_network_host(lua_State *L)
 {
 	lua_pushboolean(L,
@@ -37,6 +47,33 @@ static int l_network_broadcast(lua_State *L)
 	return 0;
 }
 
+static int l_network_send(lua_State *L)
+{
+	lua_getfield(L,-5,"ptr");
+	network_send(
+		(network_connection_t*)
+		lua_touserdata(L,-1),   // connection
+		(char*)
+		luaL_checkstring(L,-5), // data
+		luaL_checkint(L,-4),    // size
+		luaL_checkint(L,-3),    // flags
+		luaL_checkint(L,-2)     // channel
+	);
+	return 0;
+}
+
+static void push_connection( lua_State* L, network_connection_t * connection )
+{
+	void* data;
+	lua_createtable(L,0,3);
+	SET_STRING(L,"ip",connection->ip);
+	SET_NUMBER(L,"port",connection->port);
+	lua_pushstring(L,"ptr");
+	data = lua_newuserdata(L,sizeof(connection));
+	memcpy(data,connection,sizeof(connection));
+	lua_settable(L,-3);
+}
+
 static int handle_packet( network_event_t type, void* data, void* context )
 {
 	lua_State *L = context;
@@ -48,19 +85,18 @@ static int handle_packet( network_event_t type, void* data, void* context )
 	case NETWORK_EVENT_CONNECT:
 	case NETWORK_EVENT_DISCONNECT:
 		{
-			network_connection_t* connection = data;
-			lua_pushstring(L, type == NETWORK_EVENT_CONNECT ?
-				"connect" : "disconnect" );
-			lua_pushfstring(L,"%s:%d", connection->ip, connection->port);
+			lua_pushstring(L,
+				type == NETWORK_EVENT_CONNECT ?
+					"connect" : "disconnect" );
+			push_connection(L,(network_connection_t*)data);
 			lua_call(L,2,1);
 		}
 		break;
 	case NETWORK_EVENT_PACKET:
 		{
 			network_packet_t* packet = data;
-			network_connection_t* connection = packet->from;
 			lua_pushstring(L,"data");
-			lua_pushfstring(L,"%s:%d", connection->ip, connection->port);
+			push_connection(L,packet->from);
 			lua_pushlstring(L,(const char *) packet->data, packet->size);
 			lua_call(L,3,1);
 		}
@@ -94,16 +130,17 @@ static int l_network_state(lua_State *L)
 	return 1;
 }
 
+static int l_network_flush(lua_State *L)
+{
+	network_flush();
+	return 0;
+}
+
 static int l_network_quit(lua_State *L)
 {
 	network_quit();
 	return 0;
 }
-
-#define SET_NUMBER(L,name,number)\
-	lua_pushstring(L,name);\
-	lua_pushnumber(L,number);\
-	lua_settable(L,-3);
 
 static void create_flags(lua_State *L)
 {
@@ -120,7 +157,9 @@ static const struct luaL_Reg net [] = {
 	{"join",l_network_join},
 	{"pump",l_network_pump},
 	{"quit",l_network_quit},
+	{"flush",l_network_flush},
 	{"state",l_network_state},
+	{"send",l_network_send},
 	{"broadcast",l_network_broadcast},
 	{NULL,NULL},
 };
