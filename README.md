@@ -10,7 +10,7 @@ Why?
 
 	This serves mainly as an example.
 
-	It demonstrates using Enet, binding C to Lua, and simple relay server.
+	It demonstrates using Enet, binding C to Lua, and a simple relay server.
 
 Build:
 
